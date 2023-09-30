@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
  * @author Usuario
  */
 public class NuevoProductoJFrame extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form NuevoProductoJFrame
@@ -20,9 +21,20 @@ public class NuevoProductoJFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null); //La coloca al centro
         this.setResizable(false); //Bloquea el redimensionamiento de la ventana
         this.setTitle("Nuevo producto"); //Título a la ventana
+        
+        
+        }
+    
+    private boolean esProductoPorDefecto(String nombreProducto) {
+        String[] productosPorDefecto = {"Pizza", "Pollo Frito", "Papas Fritas", "Gaseosa"};
+        for (String producto : productosPorDefecto) {
+            if (producto.equalsIgnoreCase(nombreProducto)) {
+                return true;
+            }
+        }
+        return false;
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,7 +155,8 @@ public class NuevoProductoJFrame extends javax.swing.JFrame {
 
             // Agregar el nuevo producto a la lista de productos
             Practica2.listaProductos.add(nuevoProducto);
-                              
+            
+                        
             // Limpiar los campos de texto
             nombreProductoTF.setText("");
             precioTF.setText("");

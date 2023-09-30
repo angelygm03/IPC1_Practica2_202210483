@@ -3,6 +3,7 @@ gui\NuevoProductoJFrame$1.class
 gui\RestauranteMainFrame$3.class
 gui\RestauranteMainFrame.class
 gui\MenuPrincipalJFrame$3.class
+gui\RestauranteMainFrame$11.class
 com\mycompany\practica2\Practica2.class
 gui\NuevoProductoJFrame$4.class
 gui\RestauranteMainFrame$5.class
@@ -12,6 +13,7 @@ gui\NuevoProductoJFrame$5.class
 gui\MenuPrincipalJFrame$4.class
 gui\MenuPrincipalJFrame$2.class
 gui\RestauranteMainFrame$7.class
+gui\RestauranteMainFrame$10.class
 gui\NuevoProductoJFrame$2.class
 gui\NuevoProductoJFrame$3.class
 gui\MenuPrincipalJFrame$1.class
