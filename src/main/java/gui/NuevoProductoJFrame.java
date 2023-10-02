@@ -2,7 +2,11 @@ package gui;
 
 import com.mycompany.practica2.Practica2;
 import com.mycompany.practica2.Producto;
+import com.mycompany.practica2.Producto.ProductoAgregadoListener;
+import java.awt.Color;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,19 +14,28 @@ import javax.swing.JOptionPane;
  */
 public class NuevoProductoJFrame extends javax.swing.JFrame {
     
-
+    private ProductoAgregadoListener productoAgregadoListener;
+    private DefaultTableModel productosTableModel;
+    private JTable productosJTable;
     /**
      * Creates new form NuevoProductoJFrame
      */
     public NuevoProductoJFrame() {
         initComponents();
         
+        int rojo = 249; // Valor de rojo (0-255)
+        int verde = 243; // Valor de verde (0-255)
+        int azul = 204;
+        Color colorPersonalizado = new Color(rojo, verde, azul);
+        this.getContentPane().setBackground(colorPersonalizado);
+        
         this.setVisible(true); //Hace visible la ventana
         this.setLocationRelativeTo(null); //La coloca al centro
         this.setResizable(false); //Bloquea el redimensionamiento de la ventana
         this.setTitle("Nuevo producto"); //Título a la ventana
         
-        
+        this.productosTableModel = productosTableModel;
+        this.productosJTable = productosJTable;
         }
     
     private boolean esProductoPorDefecto(String nombreProducto) {
@@ -35,6 +48,10 @@ public class NuevoProductoJFrame extends javax.swing.JFrame {
         return false;
     }
 
+    public void setProductoAgregadoListener(ProductoAgregadoListener listener) {
+        this.productoAgregadoListener = listener;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,7 +173,12 @@ public class NuevoProductoJFrame extends javax.swing.JFrame {
             // Agregar el nuevo producto a la lista de productos
             Practica2.listaProductos.add(nuevoProducto);
             
-                        
+            if (productosTableModel != null) {
+            productosTableModel.addRow(new Object[]{nombre, precio});
+        }
+            if (productoAgregadoListener != null) {
+            productoAgregadoListener.productoAgregado(nuevoProducto);
+        }            
             // Limpiar los campos de texto
             nombreProductoTF.setText("");
             precioTF.setText("");

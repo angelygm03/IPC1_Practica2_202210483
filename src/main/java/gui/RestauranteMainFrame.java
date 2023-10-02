@@ -2,6 +2,10 @@ package gui;
 
 import com.mycompany.practica2.Practica2;
 import com.mycompany.practica2.Producto;
+import java.awt.Color;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,6 +18,10 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private int contadorPollo = 0;
     private int contadorPapas = 0;
     private int contadorGaseosa = 0;
+    private double totalPedido = 0.0;
+    private DefaultTableModel modelo;
+    private EnvioPedidosJFrame envioPedidosFrame;
+
     
     
     /**
@@ -22,16 +30,39 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     public RestauranteMainFrame() {
         initComponents();
         
-                
+        int rojo = 249; // Valor de rojo (0-255)
+        int verde = 243; // Valor de verde (0-255)
+        int azul = 204;
+        Color colorPersonalizado = new Color(rojo, verde, azul);
+        this.getContentPane().setBackground(colorPersonalizado);
+        
         this.setVisible(true); //Hace visible la ventana
         this.setLocationRelativeTo(null); //La coloca al centro
         this.setResizable(false); //Bloquea el redimensionamiento de la ventana
         this.setTitle("Nuevo pedido"); //Título a la ventana
         
-        
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Producto");
+        modelo.addColumn("Precio");
+        productosAgregadosJTable.setModel(modelo);
     }
-
         
+        public void LlenarTablaProductos(List<Producto> productos) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Producto");
+        modelo.addColumn("Precio");
+
+        for (Producto producto : productos) {
+            Object[] fila = {producto.getNombre(), producto.getPrecio()};
+            modelo.addRow(fila);
+        }
+
+        productosJTable.setModel(modelo);
+    }
+    
+    public String getDistanciaTexto() {
+        return distanciaTF.getText();
+    }
     
 
     /**
@@ -59,10 +90,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         agregarPapasButton = new javax.swing.JButton();
         agregarGaseosaButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         confirmarPedidoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        productosTable = new javax.swing.JTable();
+        productosJTable = new javax.swing.JTable();
         agregarProductoButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         productosAgregadosJTable = new javax.swing.JTable();
@@ -175,9 +205,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         jLabel8.setText("Productos agregados");
 
-        jLabel9.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
-        jLabel9.setText("Total Q.");
-
         confirmarPedidoButton.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         confirmarPedidoButton.setText("Confirmar Pedido");
         confirmarPedidoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -186,8 +213,8 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             }
         });
 
-        productosTable.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
-        productosTable.setModel(new javax.swing.table.DefaultTableModel(
+        productosJTable.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
+        productosJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -213,7 +240,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(productosTable);
+        jScrollPane1.setViewportView(productosJTable);
 
         agregarProductoButton.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         agregarProductoButton.setText("Agregar el producto seleccionado al pedido");
@@ -262,7 +289,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         jLabel12.setText("km");
 
         vehiculoComboBox.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
-        vehiculoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar" }));
+        vehiculoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motociclista 1", "Motociclista 2", "Motociclista 3" }));
         vehiculoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehiculoComboBoxActionPerformed(evt);
@@ -277,7 +304,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         });
 
         totalPedidoLabel.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
-        totalPedidoLabel.setText("jLabel13");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -337,27 +363,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(agregarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(82, 82, 82)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(totalPedidoLabel))
-                                    .addComponent(confirmarPedidoButton))))
-                        .addGap(32, 32, 32))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addGap(18, 18, 18)
@@ -369,7 +374,29 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel12))
                             .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(agregarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(82, 82, 82)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(confirmarPedidoButton)))
+                                .addGap(32, 32, 32))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(totalPedidoLabel)
+                                .addGap(54, 54, 54))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,13 +443,11 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(totalPedidoLabel)))
+                                .addComponent(totalPedidoLabel))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(agregarProductoButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -442,25 +467,61 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private void agregarPizzaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPizzaButtonActionPerformed
         contadorPizza++;
         agregarPizzaButton.setText("Agregar (" + contadorPizza + ")");
+        double precioPizza = 55;
+        Object[] fila = {"Pizza", precioPizza};
+        modelo.addRow(fila);
+        totalPedido += precioPizza;
+        totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_agregarPizzaButtonActionPerformed
 
     private void agregarPolloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPolloButtonActionPerformed
         contadorPollo++;
         agregarPolloButton.setText("Agregar (" + contadorPollo + ")");
+        double precioPollo = 130;
+        Object[] fila = {"Pollo Frito", precioPollo};
+        modelo.addRow(fila);
+        totalPedido += precioPollo;
+        totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_agregarPolloButtonActionPerformed
 
     private void agregarPapasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPapasButtonActionPerformed
         contadorPapas++;
         agregarPapasButton.setText("Agregar (" + contadorPapas + ")");
+        double precioPapas = 15;
+        Object[] fila = {"Papas Fritas", precioPapas};
+        modelo.addRow(fila);
+        totalPedido += precioPapas;
+        totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_agregarPapasButtonActionPerformed
 
     private void agregarGaseosaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarGaseosaButtonActionPerformed
         contadorGaseosa++;
         agregarGaseosaButton.setText("Agregar (" + contadorGaseosa + ")");
+        double precioGaseosa = 12;
+        Object[] fila = {"Gaseosa", precioGaseosa};
+        modelo.addRow(fila);
+        totalPedido += precioGaseosa;
+        totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_agregarGaseosaButtonActionPerformed
 
     private void confirmarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPedidoButtonActionPerformed
-        // TODO add your handling code here:
+        String distanciaTexto = distanciaTF.getText();
+        String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+
+        try {
+            int distancia = Integer.parseInt(distanciaTexto);
+            if (distancia > 10) {
+                JOptionPane.showMessageDialog(this, "La distancia no puede ser mayor a 10 km", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            EnvioPedidosJFrame envioPedidosFrame = new EnvioPedidosJFrame();
+            envioPedidosFrame.setRestauranteMainFrame(this);
+            envioPedidosFrame.setVisible(true);
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: Por favor, ingresa una distancia válida", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_confirmarPedidoButtonActionPerformed
 
     private void distanciaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distanciaTFActionPerformed
@@ -531,14 +592,13 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private gui.PapasPanel papasPanel1;
     private gui.PizzaPanel pizzaPanel1;
     private gui.PolloPanel polloPanel1;
     private javax.swing.JTable productosAgregadosJTable;
-    private javax.swing.JTable productosTable;
+    private javax.swing.JTable productosJTable;
     private javax.swing.JLabel totalPedidoLabel;
     private javax.swing.JComboBox<String> vehiculoComboBox;
     // End of variables declaration//GEN-END:variables
