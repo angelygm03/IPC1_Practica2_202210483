@@ -47,7 +47,6 @@ public class MovimientoImagen extends JPanel {
             }
         });
 
-        timer.start();
     }
 
     public void iniciarMovimiento() {
