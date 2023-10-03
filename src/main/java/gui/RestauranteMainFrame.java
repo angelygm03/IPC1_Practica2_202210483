@@ -206,7 +206,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         productosJTable = new javax.swing.JTable();
         nuevoProductoButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        historialPedidosButton = new javax.swing.JButton();
         nuevaOrdenButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -410,7 +410,12 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Historial de Pedidos");
+        historialPedidosButton.setText("Historial de Pedidos");
+        historialPedidosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historialPedidosButtonActionPerformed(evt);
+            }
+        });
 
         nuevaOrdenButton.setText("Nueva Orden");
         nuevaOrdenButton.addActionListener(new java.awt.event.ActionListener() {
@@ -497,7 +502,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(confirmarPedidoButton)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(historialPedidosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(32, 32, 32))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -536,7 +541,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nuevoProductoButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(historialPedidosButton)
                         .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(polloPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -732,6 +737,12 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_nuevaOrdenButtonActionPerformed
 
+    private void historialPedidosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialPedidosButtonActionPerformed
+        
+        HistorialJFrame historialJFrame = new HistorialJFrame(this);
+        historialJFrame.setVisible(true);
+    }//GEN-LAST:event_historialPedidosButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -777,7 +788,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton confirmarPedidoButton;
     private javax.swing.JTextField distanciaTF;
     private gui.GaseosaPanel gaseosaPanel1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton historialPedidosButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

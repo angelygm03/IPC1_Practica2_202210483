@@ -122,7 +122,7 @@
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
                                           <Component id="confirmarPedidoButton" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton2" min="-2" pref="164" max="-2" attributes="0"/>
+                                          <Component id="historialPedidosButton" min="-2" pref="164" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -175,7 +175,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="nuevoProductoButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Component id="historialPedidosButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="polloPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -536,10 +536,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevoProductoButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="historialPedidosButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Historial de Pedidos"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="historialPedidosButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="nuevaOrdenButton">
       <Properties>
