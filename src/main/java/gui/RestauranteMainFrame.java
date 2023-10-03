@@ -35,6 +35,8 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private Motociclista motociclista1;
     private Motociclista motociclista2;
     private Motociclista motociclista3;
+    private String distanciaTemporal;
+    private int velocidadConstante = 2;
 
 
     public List<Producto> getProducto() {
@@ -83,6 +85,10 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         motociclista1 = new Motociclista("Motociclista 1", "1");
         motociclista2 = new Motociclista("Motociclista 2", "2");
         motociclista3 = new Motociclista("Motociclista 3", "3");
+
+        envioPedidosFrame = new EnvioPedidosJFrame();
+        envioPedidosFrame.setRestauranteMainFrame(this); // Esto es importante para establecer la referencia bidireccional
+        envioPedidosFrame.setVisible(false); // Configura la visibilidad como falso al principio
 
         }
 
@@ -633,11 +639,11 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private void confirmarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPedidoButtonActionPerformed
         String distanciaTexto = distanciaTF.getText();
         String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
-
-        if (productos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        System.out.println("se lee la moto seleccionada");
+    if (productos.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
         try {
             int distancia = Integer.parseInt(distanciaTexto);
@@ -646,8 +652,13 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                 return;
             }
 
-            EnvioPedidosJFrame envioPedidosFrame = new EnvioPedidosJFrame();
-            envioPedidosFrame.setRestauranteMainFrame(this);
+            // Calcular la velocidad proporcional a la distancia
+            int velocidad = distancia * velocidadConstante;
+
+            // Configurar la velocidad en el objeto MovimientoImagen
+            envioPedidosFrame.setVelocidadMovimiento(velocidad);
+
+            // Mostrar la ventana de EnvioPedidosJFrame
             envioPedidosFrame.setVisible(true);
 
         } catch (NumberFormatException e) {
@@ -680,14 +691,29 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
 
     private void vehiculoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculoComboBoxActionPerformed
         String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+        String distanciaTexto = distanciaTF.getText(); // Obtener la distancia ingresada
 
         // Verifica si el motociclista ya ha sido asignado a otra orden
         if (motociclistasAsignados.contains(motociclistaSeleccionado)) {
             JOptionPane.showMessageDialog(this, "Este motociclista ya ha sido asignado a otra orden.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Puedes tomar medidas adicionales aquí, como reiniciar la selección del combo box o mostrar un mensaje adecuado al usuario.
-            // Por ejemplo: vehiculoComboBox.setSelectedIndex(0); // Reinicia la selección
+            vehiculoComboBox.setSelectedIndex(0); // Reinicia la selección
         } else {
-            // El motociclista no ha sido asignado anteriormente, puedes continuar con la selección.
+            System.out.println("Se selecciona moto");
+
+            try {
+                int distancia = Integer.parseInt(distanciaTexto);
+                if (distancia > 10) {
+                    JOptionPane.showMessageDialog(this, "La distancia no puede ser mayor a 10 km", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Configurar la distancia para el motociclista seleccionado
+                envioPedidosFrame.setDistanciaMotociclista(motociclistaSeleccionado, distanciaTexto);
+                System.out.println("Distancia para moto");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Por favor, ingresa una distancia válida", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
 

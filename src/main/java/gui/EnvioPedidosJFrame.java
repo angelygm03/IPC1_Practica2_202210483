@@ -70,7 +70,38 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     movimientoImagen.iniciarMovimiento();
 }
     
+    public void setDistanciaMotociclista1(String distancia) {
+        distanciaM1.setText("Distancia: " + distancia + " km");
+        System.out.println("Distancia moto 1");
+    }
+
+    public void setDistanciaMotociclista2(String distancia) {
+        distanciaM2.setText("Distancia: " + distancia + " km");
+        System.out.println("Distancia moto 2");
+    }
+
+    public void setDistanciaMotociclista3(String distancia) {
+        distanciaM3.setText("Distancia: " + distancia + " km");
+        System.out.println("Distancia moto 3");
+    }
     
+    public void setDistanciaMotociclista(String motociclista, String distancia) {
+        if (motociclista.equals("Motociclista 1")) {
+            distanciaM1.setText("Distancia: " + distancia + " km");
+        } else if (motociclista.equals("Motociclista 2")) {
+            distanciaM2.setText("Distancia: " + distancia + " km");
+        } else if (motociclista.equals("Motociclista 3")) {
+            distanciaM3.setText("Distancia: " + distancia + " km");
+        }
+        System.out.println("metodo set distancia");
+    }
+    
+    public void setVelocidadMovimiento(int velocidad) {
+        if (movimientoImagen != null) {
+            movimientoImagen.setVelocidad(velocidad);
+        }
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,13 +114,13 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         enviarTodosButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        distanciaM1 = new javax.swing.JLabel();
         enviarMotociclista1Button = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        distanciaM2 = new javax.swing.JLabel();
         enviarMotociclista2Button = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        distanciaM3 = new javax.swing.JLabel();
         enviarMotociclista3Button = new javax.swing.JButton();
         regresarButton = new javax.swing.JButton();
         movimientoImagen1 = new gui.MovimientoImagen();
@@ -110,7 +141,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Motocicleta 1");
 
-        jLabel3.setText("Distancia");
+        distanciaM1.setText("Distancia");
 
         enviarMotociclista1Button.setText("Enviar");
         enviarMotociclista1Button.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +152,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Motocicleta 2");
 
-        jLabel5.setText("Distancia");
+        distanciaM2.setText("Distancia");
 
         enviarMotociclista2Button.setText("Enviar");
         enviarMotociclista2Button.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +163,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Motocicleta 3");
 
-        jLabel7.setText("Distancia");
+        distanciaM3.setText("Distancia");
 
         enviarMotociclista3Button.setText("Enviar");
         enviarMotociclista3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -201,13 +232,13 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(enviarMotociclista2Button)
-                                    .addComponent(jLabel5)
+                                    .addComponent(distanciaM2)
                                     .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
+                                    .addComponent(distanciaM1)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(enviarMotociclista1Button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jLabel7)
+                                    .addComponent(distanciaM3)
                                     .addComponent(jLabel6))
                                 .addGap(58, 58, 58)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -231,14 +262,14 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(17, 17, 17)
-                                .addComponent(jLabel3)
+                                .addComponent(distanciaM1)
                                 .addGap(22, 22, 22)
                                 .addComponent(enviarMotociclista1Button))
                             .addComponent(movimientoImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(91, 91, 91)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(distanciaM2)
                         .addGap(18, 18, 18)
                         .addComponent(enviarMotociclista2Button))
                     .addComponent(movimientoImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -247,7 +278,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
+                        .addComponent(distanciaM3)
                         .addGap(18, 18, 18)
                         .addComponent(enviarMotociclista3Button))
                     .addComponent(movimientoImagen3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -339,17 +370,17 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel distanciaM1;
+    private javax.swing.JLabel distanciaM2;
+    private javax.swing.JLabel distanciaM3;
     private javax.swing.JButton enviarMotociclista1Button;
     private javax.swing.JButton enviarMotociclista2Button;
     private javax.swing.JButton enviarMotociclista3Button;
     private javax.swing.JButton enviarTodosButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private gui.MovimientoImagen movimientoImagen1;
     private gui.MovimientoImagen movimientoImagen2;
     private gui.MovimientoImagen movimientoImagen3;

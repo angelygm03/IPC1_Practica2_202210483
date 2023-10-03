@@ -26,6 +26,7 @@ public class MovimientoImagen extends JPanel {
     private double escala = 0.2;
     private EnvioPedidosJFrame envioPedidosFrame;
     private Image imagenFondo;
+    private int velocidad = 1;
     
     
     public MovimientoImagen() {
@@ -50,6 +51,9 @@ public class MovimientoImagen extends JPanel {
         });
 
     }
+public void setVelocidad(int velocidad) {
+    this.velocidad = velocidad;
+}
 
     public void iniciarMovimiento() {
         if (!timer.isRunning()) {
@@ -72,7 +76,7 @@ public class MovimientoImagen extends JPanel {
     }
     
     private void moverImagen() {
-        x += direccion;
+        x += velocidad * direccion;
 
         if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
             direccion *= -1; // Cambiar de dirección al llegar al borde
@@ -83,7 +87,7 @@ public class MovimientoImagen extends JPanel {
             }
         }
 
-    repaint();
+        repaint();
     }
 
     @Override
