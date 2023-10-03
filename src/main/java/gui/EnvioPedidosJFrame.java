@@ -1,9 +1,11 @@
 package gui;
 
 
+import com.mycompany.practica2.Orden;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.WindowConstants;
 
 
@@ -14,7 +16,7 @@ import javax.swing.WindowConstants;
 public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private RestauranteMainFrame restauranteMainFrame;
     private MovimientoImagen movimientoImagen;
-   
+    private Orden ordenEnCurso;
     
     
     public void setRestauranteMainFrame(RestauranteMainFrame restauranteMainFrame) {
@@ -50,8 +52,22 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     
     }
     
+    public void iniciarOrden(Orden orden) {
+    // Asigna la orden en curso
+    this.ordenEnCurso = orden;
+}
+    public void marcarOrdenComoFinalizada() {
+    if (ordenEnCurso != null) {
+        // Registra la fecha y hora de entrega
+        ordenEnCurso.setFechaEntrega(new Date()); 
 
-    
+        // Marca la orden como finalizada 
+        ordenEnCurso.setFinalizada(true); 
+
+        
+    }
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,9 +88,10 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        movimientoImagen1 = new gui.MovimientoImagen();
         movimientoImagen2 = new gui.MovimientoImagen();
         movimientoImagen3 = new gui.MovimientoImagen();
+        regresarButton = new javax.swing.JButton();
+        movimientoImagen1 = new gui.MovimientoImagen();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,17 +133,6 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout movimientoImagen1Layout = new javax.swing.GroupLayout(movimientoImagen1);
-        movimientoImagen1.setLayout(movimientoImagen1Layout);
-        movimientoImagen1Layout.setHorizontalGroup(
-            movimientoImagen1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 743, Short.MAX_VALUE)
-        );
-        movimientoImagen1Layout.setVerticalGroup(
-            movimientoImagen1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 102, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout movimientoImagen2Layout = new javax.swing.GroupLayout(movimientoImagen2);
         movimientoImagen2.setLayout(movimientoImagen2Layout);
         movimientoImagen2Layout.setHorizontalGroup(
@@ -149,43 +155,61 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
             .addGap(0, 102, Short.MAX_VALUE)
         );
 
+        regresarButton.setText("Regresar");
+        regresarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regresarButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout movimientoImagen1Layout = new javax.swing.GroupLayout(movimientoImagen1);
+        movimientoImagen1.setLayout(movimientoImagen1Layout);
+        movimientoImagen1Layout.setHorizontalGroup(
+            movimientoImagen1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 707, Short.MAX_VALUE)
+        );
+        movimientoImagen1Layout.setVerticalGroup(
+            movimientoImagen1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 102, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(209, 209, 209)
-                .addComponent(jButton1)
-                .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(enviarMotociclista1Button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(regresarButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(209, 209, 209)
+                        .addComponent(jButton1)
+                        .addGap(33, 33, 33))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(movimientoImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 743, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton3)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(enviarMotociclista1Button, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(69, 69, 69)
-                                .addComponent(movimientoImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6))
-                        .addGap(50, 50, 50)
-                        .addComponent(movimientoImagen3, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)))
-                .addGap(0, 64, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(movimientoImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(movimientoImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton4)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6))
+                                .addGap(50, 50, 50)
+                                .addComponent(movimientoImagen3, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)))
+                        .addGap(0, 64, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +217,8 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(regresarButton))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -201,25 +226,25 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addComponent(jLabel3)
                         .addGap(22, 22, 22)
-                        .addComponent(enviarMotociclista1Button))
-                    .addComponent(movimientoImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addComponent(movimientoImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(enviarMotociclista1Button)
+                        .addGap(63, 63, 63)
+                        .addComponent(movimientoImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4))
-                    .addComponent(movimientoImagen3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3)
+                                .addGap(43, 43, 43)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton4))
+                            .addComponent(movimientoImagen3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(movimientoImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -237,6 +262,14 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         movimientoImagen3.iniciarMovimiento();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void regresarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarButtonActionPerformed
+        dispose();
+
+        if (restauranteMainFrame != null) {
+            restauranteMainFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_regresarButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,5 +321,6 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private gui.MovimientoImagen movimientoImagen1;
     private gui.MovimientoImagen movimientoImagen2;
     private gui.MovimientoImagen movimientoImagen3;
+    private javax.swing.JButton regresarButton;
     // End of variables declaration//GEN-END:variables
 }

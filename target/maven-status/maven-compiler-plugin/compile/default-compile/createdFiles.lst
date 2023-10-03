@@ -6,6 +6,7 @@ gui\RestauranteMainFrame$3.class
 gui\RestauranteMainFrame.class
 gui\MovimientoImagen$1.class
 gui\RestauranteMainFrame$11.class
+com\mycompany\practica2\Orden.class
 com\mycompany\practica2\Practica2.class
 gui\EnvioPedidosJFrame$2.class
 gui\NuevoProductoJFrame$4.class
@@ -28,6 +29,7 @@ gui\RestauranteMainFrame$1.class
 gui\RestauranteMainFrame$12.class
 gui\PolloPanel.class
 com\mycompany\practica2\Producto.class
+gui\EnvioPedidosJFrame$6.class
 gui\GaseosaPanel.class
 gui\RestauranteMainFrame$9.class
 gui\EnvioPedidosJFrame$1.class

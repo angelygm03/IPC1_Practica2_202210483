@@ -25,11 +25,13 @@ public class MovimientoImagen extends JPanel {
     private int direccion;
     private Timer timer;
     private double escala = 0.2;
-    
+    private EnvioPedidosJFrame envioPedidosFrame;
+    private Image imagenFondo;
     
     public MovimientoImagen() {
         try {
             imagenDelivery = ImageIO.read(new File("C:/Users/Usuario/Downloads/delivery-man.png"));
+            imagenFondo = ImageIO.read(new File("C:/Users/Usuario/Downloads/road (1).png")); 
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,11 +57,20 @@ public class MovimientoImagen extends JPanel {
         }
     }
 
+    public void setEnvioPedidosFrame(EnvioPedidosJFrame envioPedidosFrame) {
+        this.envioPedidosFrame = envioPedidosFrame;
+    }
+    
     private void moverImagen() {
         x += direccion;
 
         if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
             direccion *= -1; // Cambiar de dirección al llegar al borde
+        if (direccion == -1) {
+                if (envioPedidosFrame != null) {
+                    envioPedidosFrame.marcarOrdenComoFinalizada();
+                }
+            }
         }
 
         repaint();
@@ -69,6 +80,9 @@ public class MovimientoImagen extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if (imagenFondo != null) {
+            g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+    }
         if (imagenDelivery != null) {
             int panelWidth = getWidth();
             int panelHeight = getHeight();

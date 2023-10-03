@@ -1,5 +1,6 @@
 package gui;
 
+import com.mycompany.practica2.Orden;
 import com.mycompany.practica2.Practica2;
 import com.mycompany.practica2.Producto;
 import com.mycompany.practica2.Producto.ProductoAgregadoListener;
@@ -7,7 +8,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -29,6 +33,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private EnvioPedidosJFrame envioPedidosFrame;
     public List<Producto> productos = new ArrayList<>();
     private NuevoProductoJFrame nuevoProductoFrame;
+    private Set<String> motociclistasAsignados = new HashSet<>();
+    private List<Orden> ordenes = new ArrayList<>();
+
 
     public List<Producto> getProducto() {
         return productos;
@@ -74,14 +81,13 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
 
         
         }
-        
-    
+
     
     public String getDistanciaTexto() {
         return distanciaTF.getText();
     }
     
-    
+
     public void ActualizarTablaProductos(List<Producto> productos){
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("Nombre");
@@ -116,6 +122,19 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         agregarPapasButton.setText("Agregar");
         agregarGaseosaButton.setText("Agregar");
     }
+
+    public void crearNuevaOrden() {
+        Orden nuevaOrden = new Orden();
+        nuevaOrden.setProductos(productos); 
+        nuevaOrden.setFechaCreacion(new Date()); // Establece la fecha y hora de creación
+        
+        ordenes.add(nuevaOrden); // Agrega la orden a la lista
+}
+
+    public void entregarOrden(Orden orden) {
+    orden.setFechaEntrega(new Date()); // Establece la fecha y hora de entrega
+    // Puedes realizar otras acciones relacionadas con la entrega de la orden
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -314,7 +333,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         jLabel12.setText("km");
 
-        vehiculoComboBox.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
+        vehiculoComboBox.setFont(new java.awt.Font("Tw Cen MT", 0, 16)); // NOI18N
         vehiculoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motociclista 1", "Motociclista 2", "Motociclista 3" }));
         vehiculoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -617,7 +636,16 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarProductoButtonActionPerformed
 
     private void vehiculoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculoComboBoxActionPerformed
-        // TODO add your handling code here:
+        String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+
+        // Verifica si el motociclista ya ha sido asignado a otra orden
+        if (motociclistasAsignados.contains(motociclistaSeleccionado)) {
+            JOptionPane.showMessageDialog(this, "Este motociclista ya ha sido asignado a otra orden.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Puedes tomar medidas adicionales aquí, como reiniciar la selección del combo box o mostrar un mensaje adecuado al usuario.
+            // Por ejemplo: vehiculoComboBox.setSelectedIndex(0); // Reinicia la selección
+        } else {
+            // El motociclista no ha sido asignado anteriormente, puedes continuar con la selección.
+        }
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
