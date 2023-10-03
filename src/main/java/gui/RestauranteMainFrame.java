@@ -586,6 +586,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         modelo.addRow(fila);
         totalPedido += precioPizza;
         totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
+        
+        Producto pizza = new Producto("Pizza", precioPizza);
+        productos.add(pizza);
     }//GEN-LAST:event_agregarPizzaButtonActionPerformed
 
     private void agregarPolloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPolloButtonActionPerformed
@@ -596,6 +599,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         modelo.addRow(fila);
         totalPedido += precioPollo;
         totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
+        
+        Producto polloFrito = new Producto("Pollo Frito", precioPollo);
+        productos.add(polloFrito);
     }//GEN-LAST:event_agregarPolloButtonActionPerformed
 
     private void agregarPapasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPapasButtonActionPerformed
@@ -606,6 +612,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         modelo.addRow(fila);
         totalPedido += precioPapas;
         totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
+        
+        Producto papas = new Producto("Papas Fritas", precioPapas);
+        productos.add(papas);
     }//GEN-LAST:event_agregarPapasButtonActionPerformed
 
     private void agregarGaseosaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarGaseosaButtonActionPerformed
@@ -616,11 +625,19 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         modelo.addRow(fila);
         totalPedido += precioGaseosa;
         totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
+        
+        Producto gaseosa = new Producto("Gaseosa", precioGaseosa);
+        productos.add(gaseosa);
     }//GEN-LAST:event_agregarGaseosaButtonActionPerformed
 
     private void confirmarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPedidoButtonActionPerformed
         String distanciaTexto = distanciaTF.getText();
         String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+
+        if (productos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         try {
             int distancia = Integer.parseInt(distanciaTexto);
@@ -632,7 +649,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             EnvioPedidosJFrame envioPedidosFrame = new EnvioPedidosJFrame();
             envioPedidosFrame.setRestauranteMainFrame(this);
             envioPedidosFrame.setVisible(true);
-            
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error: Por favor, ingresa una distancia válida", "Error", JOptionPane.ERROR_MESSAGE);
         }

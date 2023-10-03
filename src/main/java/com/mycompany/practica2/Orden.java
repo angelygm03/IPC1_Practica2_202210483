@@ -1,5 +1,6 @@
 package com.mycompany.practica2;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * @author Usuario
  */
 public class Orden {
-    private List<Producto> productos;
+    private List<Producto> productos = new ArrayList<>();
     private Date fechaCreacion;
     private Date fechaEntrega;
     private boolean finalizada;

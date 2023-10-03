@@ -297,7 +297,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         movimientoImagen2.iniciarMovimiento();
         movimientoImagen3.iniciarMovimiento();
 
-        // Deshabilitar los botones individuales
+        // Los botones individuales
         enviarMotociclista1Habilitado = true;
         enviarMotociclista2Habilitado = true;
         enviarMotociclista3Habilitado = true;
