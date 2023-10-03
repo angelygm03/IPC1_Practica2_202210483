@@ -12,6 +12,7 @@ public class Orden {
     private Date fechaCreacion;
     private Date fechaEntrega;
     private boolean finalizada;
+    private Motociclista motociclistaAsignado;
     
     public List<Producto> getProductos() {
         return productos;
@@ -39,5 +40,11 @@ public class Orden {
     public void setFinalizada(boolean finalizada) {
         this.finalizada = finalizada;
     }
+    public Motociclista getMotociclistaAsignado() {
+        return motociclistaAsignado;
+    }
 
+    public void setMotociclistaAsignado(Motociclista motociclistaAsignado) {
+        this.motociclistaAsignado = motociclistaAsignado;
+    }
 }

@@ -1,20 +1,15 @@
 package gui;
 
+import com.mycompany.practica2.Motociclista;
 import com.mycompany.practica2.Orden;
-import com.mycompany.practica2.Practica2;
 import com.mycompany.practica2.Producto;
-import com.mycompany.practica2.Producto.ProductoAgregadoListener;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,6 +30,11 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private NuevoProductoJFrame nuevoProductoFrame;
     private Set<String> motociclistasAsignados = new HashSet<>();
     private List<Orden> ordenes = new ArrayList<>();
+    private List<Motociclista> motociclistas = new ArrayList<>();
+    private Motociclista motociclistaAsignado; 
+    private Motociclista motociclista1;
+    private Motociclista motociclista2;
+    private Motociclista motociclista3;
 
 
     public List<Producto> getProducto() {
@@ -79,7 +79,11 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         
         productosJTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite seleccionar una sola fila a la vez
 
-        
+                
+        motociclista1 = new Motociclista("Motociclista 1", "1");
+        motociclista2 = new Motociclista("Motociclista 2", "2");
+        motociclista3 = new Motociclista("Motociclista 3", "3");
+
         }
 
     
@@ -125,16 +129,38 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
 
     public void crearNuevaOrden() {
         Orden nuevaOrden = new Orden();
-        nuevaOrden.setProductos(productos); 
-        nuevaOrden.setFechaCreacion(new Date()); // Establece la fecha y hora de creación
-        
-        ordenes.add(nuevaOrden); // Agrega la orden a la lista
-}
+        nuevaOrden.setProductos(productos);
+        nuevaOrden.setFechaCreacion(new Date());
+
+        // Asigna un motociclista a la orden actual
+        asignarMotociclista(nuevaOrden);
+
+        ordenes.add(nuevaOrden);
+    
+    }
+    private void asignarMotociclista(Orden orden) {
+        String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+
+        // Encuentra un motociclista disponible que coincida con el seleccionado
+        Motociclista motociclistaDisponible = motociclistas.stream()
+                .filter(motociclista -> motociclista.estaDisponible() && motociclista.getIdentificador().equals(motociclistaSeleccionado))
+                .findFirst()
+                .orElse(null);
+
+        if (motociclistaDisponible != null) {
+            // Asigna el motociclista a la orden y marca como no disponible
+            orden.setMotociclistaAsignado(motociclistaDisponible);
+            motociclistaDisponible.setDisponible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "El motociclista seleccionado no está disponible o no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     public void entregarOrden(Orden orden) {
     orden.setFechaEntrega(new Date()); // Establece la fecha y hora de entrega
     // Puedes realizar otras acciones relacionadas con la entrega de la orden
 }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,7 +199,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         totalPedidoLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         productosJTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        nuevoProductoButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         nuevaOrdenButton = new javax.swing.JButton();
 
@@ -371,10 +397,10 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(productosJTable);
 
-        jButton1.setText("Nuevo Producto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        nuevoProductoButton.setText("Nuevo Producto");
+        nuevoProductoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                nuevoProductoButtonActionPerformed(evt);
             }
         });
 
@@ -460,7 +486,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(nuevoProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -502,7 +528,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(nuevoProductoButton)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)
                         .addGap(64, 64, 64)
@@ -648,10 +674,10 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed
         NuevoProductoJFrame nuevoProductoFrame = new NuevoProductoJFrame(this);
         nuevoProductoFrame.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_nuevoProductoButtonActionPerformed
 
     private void nuevaOrdenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaOrdenButtonActionPerformed
        reiniciarContadores();
@@ -707,7 +733,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton confirmarPedidoButton;
     private javax.swing.JTextField distanciaTF;
     private gui.GaseosaPanel gaseosaPanel1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -723,6 +748,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton nuevaOrdenButton;
+    private javax.swing.JButton nuevoProductoButton;
     private gui.PapasPanel papasPanel1;
     private gui.PizzaPanel pizzaPanel1;
     private gui.PolloPanel polloPanel1;

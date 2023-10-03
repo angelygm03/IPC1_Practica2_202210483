@@ -18,7 +18,7 @@ import javax.swing.Timer;
  *
  * @author Usuario
  */
-public class MovimientoImagen extends JPanel {
+public class MovimientoImagen3 extends JPanel {
     private Image imagenDelivery;
     private int x;
     private int direccion;
@@ -26,9 +26,9 @@ public class MovimientoImagen extends JPanel {
     private double escala = 0.2;
     private EnvioPedidosJFrame envioPedidosFrame;
     private Image imagenFondo;
+    private int motociclistaId;
     
-    
-    public MovimientoImagen() {
+    public MovimientoImagen3() {
         try {
             imagenDelivery = ImageIO.read(new File("C:/Users/Usuario/Downloads/delivery-man.png"));
             imagenFondo = ImageIO.read(new File("C:/Users/Usuario/Downloads/road (1).png")); 
@@ -53,17 +53,7 @@ public class MovimientoImagen extends JPanel {
 
     public void iniciarMovimiento() {
         if (!timer.isRunning()) {
-            x = 0; // Restablecer la posición inicial
-            direccion = 1; // Restablecer la dirección
             timer.start();
-        }
-    }
-    public void detenerMovimiento() {
-        if (timer.isRunning()) {
-            timer.stop();
-            x = 0; // Restablece la posición inicial
-            direccion = 1; // Restablece la dirección
-            repaint();
         }
     }
 
@@ -76,14 +66,12 @@ public class MovimientoImagen extends JPanel {
 
         if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
             direccion *= -1; // Cambiar de dirección al llegar al borde
-
-            // Verificar si ha completado una ida y vuelta
-            if (x <= 0) {
-                timer.stop(); // Detener el temporizador después de una ida y vuelta
+        if (direccion == -1) {
+                
             }
         }
 
-    repaint();
+        repaint();
     }
 
     @Override
@@ -114,7 +102,7 @@ public class MovimientoImagen extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(90, 45); // Establecer el tamaño del frame a 90x45
 
-        MovimientoImagen movimientoImagen = new MovimientoImagen();
+        MovimientoImagen3 movimientoImagen = new MovimientoImagen3();
         frame.add(movimientoImagen);
 
         frame.setVisible(true);
