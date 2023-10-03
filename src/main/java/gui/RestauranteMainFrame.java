@@ -2,10 +2,16 @@ package gui;
 
 import com.mycompany.practica2.Practica2;
 import com.mycompany.practica2.Producto;
+import com.mycompany.practica2.Producto.ProductoAgregadoListener;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,12 +27,26 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private double totalPedido = 0.0;
     private DefaultTableModel modelo;
     private EnvioPedidosJFrame envioPedidosFrame;
+    public List<Producto> productos = new ArrayList<>();
+    private NuevoProductoJFrame nuevoProductoFrame;
 
+    public List<Producto> getProducto() {
+        return productos;
+    }
     
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
+    }
+
+   
+    private static RestauranteMainFrame instance = null;
+    public static RestauranteMainFrame getInstance() {
+        if (instance == null) {
+            instance = new RestauranteMainFrame();
+        }
+        return instance;
+    }
     
-    /**
-     * @author Usuario
-     */
     public RestauranteMainFrame() {
         initComponents();
         
@@ -36,34 +56,66 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         Color colorPersonalizado = new Color(rojo, verde, azul);
         this.getContentPane().setBackground(colorPersonalizado);
         
+        
         this.setVisible(true); //Hace visible la ventana
         this.setLocationRelativeTo(null); //La coloca al centro
         this.setResizable(false); //Bloquea el redimensionamiento de la ventana
         this.setTitle("Nuevo pedido"); //Título a la ventana
         
+        this.ActualizarTablaProductos(productos);
+        
+        
         modelo = new DefaultTableModel();
-        modelo.addColumn("Producto");
+        modelo.addColumn("Nombre");
         modelo.addColumn("Precio");
         productosAgregadosJTable.setModel(modelo);
-    }
         
-        public void LlenarTablaProductos(List<Producto> productos) {
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Producto");
-        modelo.addColumn("Precio");
+        productosJTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite seleccionar una sola fila a la vez
 
-        for (Producto producto : productos) {
-            Object[] fila = {producto.getNombre(), producto.getPrecio()};
-            modelo.addRow(fila);
+        
         }
-
-        productosJTable.setModel(modelo);
-    }
+        
+    
     
     public String getDistanciaTexto() {
         return distanciaTF.getText();
     }
     
+    
+    public void ActualizarTablaProductos(List<Producto> productos){
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Precio");
+            
+            
+            for (Producto producto: productos){
+            Object[] fila = {producto.nombre, producto.precio};
+                modelo.addRow(fila);
+                
+            }
+            
+    
+            productosJTable.setModel(modelo);
+            
+    }
+    
+    public void abrirNuevoProductoFrame() {
+        nuevoProductoFrame = new NuevoProductoJFrame(this);
+        nuevoProductoFrame.setVisible(true);
+    }
+    
+    private void reiniciarContadores() {
+        contadorPizza = 0;
+        contadorPollo = 0;
+        contadorPapas = 0;
+        contadorGaseosa = 0;
+
+        //actualizar los botones si 
+        agregarPizzaButton.setText("Agregar");
+        agregarPolloButton.setText("Agregar");
+        agregarPapasButton.setText("Agregar");
+        agregarGaseosaButton.setText("Agregar");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,8 +143,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         agregarGaseosaButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         confirmarPedidoButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productosJTable = new javax.swing.JTable();
         agregarProductoButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         productosAgregadosJTable = new javax.swing.JTable();
@@ -102,6 +152,11 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         vehiculoComboBox = new javax.swing.JComboBox<>();
         distanciaTF = new javax.swing.JTextField();
         totalPedidoLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        productosJTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        nuevaOrdenButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -213,35 +268,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             }
         });
 
-        productosJTable.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
-        productosJTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Producto", "Precio"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(productosJTable);
-
         agregarProductoButton.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         agregarProductoButton.setText("Agregar el producto seleccionado al pedido");
         agregarProductoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -305,6 +331,43 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
 
         totalPedidoLabel.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
 
+        productosJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Nombre", "Precio"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(productosJTable);
+
+        jButton1.setText("Nuevo Producto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Historial de Pedidos");
+
+        nuevaOrdenButton.setText("Nueva Orden");
+        nuevaOrdenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevaOrdenButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -348,7 +411,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -363,22 +426,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(83, 83, 83)
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel12))
-                            .addComponent(jLabel3))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(agregarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nuevaOrdenButton))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -388,77 +438,96 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel8)
                                                 .addGap(0, 0, Short.MAX_VALUE))
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(confirmarPedidoButton)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(confirmarPedidoButton)
+                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(32, 32, 32))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(totalPedidoLabel)
-                                .addGap(54, 54, 54))))))
+                                .addGap(54, 54, 54))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68)
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18)
+                                .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel12))
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nuevaOrdenButton)
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel2)
+                        .addGap(27, 27, 27)
+                        .addComponent(pizzaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
                         .addComponent(jLabel1)
-                        .addGap(56, 56, 56)
-                        .addComponent(polloPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(27, 27, 27)
-                            .addComponent(pizzaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(58, 58, 58))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(83, 83, 83)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(papasPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(gaseosaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(30, 30, 30)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel4)))))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(polloPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(papasPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gaseosaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4))))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(agregarPizzaButton)
                     .addComponent(agregarPolloButton)
                     .addComponent(agregarPapasButton)
                     .addComponent(agregarGaseosaButton))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(totalPedidoLabel))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(totalPedidoLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(agregarProductoButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11)
-                            .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addGap(18, 18, 18)))
-                .addComponent(confirmarPedidoButton)
-                .addGap(42, 42, 42))
+                        .addComponent(agregarProductoButton)))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(confirmarPedidoButton))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -529,12 +598,41 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_distanciaTFActionPerformed
 
     private void agregarProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProductoButtonActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = productosJTable.getSelectedRow();
+    
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un producto de la tabla para agregarlo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String nombreProducto = (String) productosJTable.getValueAt(filaSeleccionada, 0); // Obtiene el nombre del producto
+        double precioProducto = (double) productosJTable.getValueAt(filaSeleccionada, 1); // Obtiene el precio del producto
+
+        DefaultTableModel modeloProductosAgregados = (DefaultTableModel) productosAgregadosJTable.getModel();
+        Object[] fila = {nombreProducto, precioProducto};
+        modeloProductosAgregados.addRow(fila);
+        
+        totalPedido += precioProducto;
+        totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
     }//GEN-LAST:event_agregarProductoButtonActionPerformed
 
     private void vehiculoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculoComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        NuevoProductoJFrame nuevoProductoFrame = new NuevoProductoJFrame(this);
+        nuevoProductoFrame.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void nuevaOrdenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaOrdenButtonActionPerformed
+       reiniciarContadores();
+    // Limpia la tabla productosAgregadosJTable si es necesario
+    DefaultTableModel modeloProductosAgregados = (DefaultTableModel) productosAgregadosJTable.getModel();
+    modeloProductosAgregados.setRowCount(0); // Borra todas las filas
+    totalPedido = 0.0; // Reinicia el total del pedido si es necesario
+    totalPedidoLabel.setText("Total del pedido: Q " + totalPedido);
+    }//GEN-LAST:event_nuevaOrdenButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -581,6 +679,8 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton confirmarPedidoButton;
     private javax.swing.JTextField distanciaTF;
     private gui.GaseosaPanel gaseosaPanel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -594,6 +694,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton nuevaOrdenButton;
     private gui.PapasPanel papasPanel1;
     private gui.PizzaPanel pizzaPanel1;
     private gui.PolloPanel polloPanel1;

@@ -154,9 +154,9 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(410, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(115, 115, 115)
+                .addGap(209, 209, 209)
                 .addComponent(jButton1)
                 .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
@@ -185,7 +185,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addGap(50, 50, 50)
                         .addComponent(movimientoImagen3, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

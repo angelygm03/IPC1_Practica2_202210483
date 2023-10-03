@@ -6,8 +6,8 @@ package com.mycompany.practica2;
  */
 public class Producto {
     
-    private String nombre;
-    private double precio;
+    public String nombre;
+    public double precio;
 
     
     public Producto(String nombre, double precio) {

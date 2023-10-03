@@ -1,5 +1,5 @@
 package com.mycompany.practica2;
-import gui.MenuPrincipalJFrame;
+import gui.RestauranteMainFrame;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -17,7 +17,7 @@ public class Practica2 {
         listaProductos.add(new Producto("Papas Fritas", 15.00));
         listaProductos.add(new Producto("Gaseosa", 12.00));
         
-        MenuPrincipalJFrame mainFrame = new MenuPrincipalJFrame();
+        RestauranteMainFrame mainFrame = new RestauranteMainFrame();
         mainFrame.setVisible(true);
     }
     
