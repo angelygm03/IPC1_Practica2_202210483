@@ -123,4 +123,4 @@ public void setVelocidad(int velocidad) {
 
         frame.setVisible(true);
     }
- }
+}

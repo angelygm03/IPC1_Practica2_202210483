@@ -37,7 +37,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private Motociclista motociclista3;
     private String distanciaTemporal;
     private int velocidadConstante = 2;
-
+    
 
     public List<Producto> getProducto() {
         return productos;
@@ -664,6 +664,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error: Por favor, ingresa una distancia válida", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    
     }//GEN-LAST:event_confirmarPedidoButtonActionPerformed
 
     private void distanciaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_distanciaTFActionPerformed
