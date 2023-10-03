@@ -6,6 +6,7 @@ import com.mycompany.practica2.Orden;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 
@@ -17,6 +18,9 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private RestauranteMainFrame restauranteMainFrame;
     private MovimientoImagen movimientoImagen;
     private Orden ordenEnCurso;
+    private boolean enviarMotociclista1Habilitado = true;
+    private boolean enviarMotociclista2Habilitado = true;
+    private boolean enviarMotociclista3Habilitado = true;
     
     
     
@@ -77,7 +81,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        enviarTodosButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         enviarMotociclista1Button = new javax.swing.JButton();
@@ -97,7 +101,12 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
         jLabel1.setText("Visualización de Trayectorias");
 
-        jButton1.setText("Enviar Todos");
+        enviarTodosButton.setText("Enviar Todos");
+        enviarTodosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enviarTodosButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Motocicleta 1");
 
@@ -184,7 +193,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(209, 209, 209)
-                        .addComponent(jButton1)
+                        .addComponent(enviarTodosButton)
                         .addGap(33, 33, 33))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +222,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1)
+                    .addComponent(enviarTodosButton)
                     .addComponent(regresarButton))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -249,15 +258,30 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enviarMotociclista1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarMotociclista1ButtonActionPerformed
-        movimientoImagen1.iniciarMovimiento();
+        if (enviarMotociclista1Habilitado) {
+            movimientoImagen1.iniciarMovimiento();
+            enviarMotociclista1Habilitado = false;
+            enviarMotociclista2Habilitado = true;
+            enviarMotociclista3Habilitado = true;
+        }
     }//GEN-LAST:event_enviarMotociclista1ButtonActionPerformed
 
     private void enviarMotociclista2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarMotociclista2ButtonActionPerformed
-        
+        if (enviarMotociclista2Habilitado) {
+            movimientoImagen2.iniciarMovimiento();
+            enviarMotociclista1Habilitado = true;
+            enviarMotociclista2Habilitado = false;
+            enviarMotociclista3Habilitado = true;
+        }
     }//GEN-LAST:event_enviarMotociclista2ButtonActionPerformed
 
     private void enviarMotociclista3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarMotociclista3ButtonActionPerformed
-        
+        if (enviarMotociclista3Habilitado) {
+            movimientoImagen3.iniciarMovimiento();
+            enviarMotociclista1Habilitado = true;
+            enviarMotociclista2Habilitado = true;
+            enviarMotociclista3Habilitado = false;
+        }
     }//GEN-LAST:event_enviarMotociclista3ButtonActionPerformed
 
     private void regresarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarButtonActionPerformed
@@ -267,6 +291,17 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
             restauranteMainFrame.setVisible(true);
         }
     }//GEN-LAST:event_regresarButtonActionPerformed
+
+    private void enviarTodosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarTodosButtonActionPerformed
+        movimientoImagen1.iniciarMovimiento();
+        movimientoImagen2.iniciarMovimiento();
+        movimientoImagen3.iniciarMovimiento();
+
+        // Deshabilitar los botones individuales
+        enviarMotociclista1Habilitado = true;
+        enviarMotociclista2Habilitado = true;
+        enviarMotociclista3Habilitado = true;
+    }//GEN-LAST:event_enviarTodosButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,7 +342,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private javax.swing.JButton enviarMotociclista1Button;
     private javax.swing.JButton enviarMotociclista2Button;
     private javax.swing.JButton enviarMotociclista3Button;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton enviarTodosButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
