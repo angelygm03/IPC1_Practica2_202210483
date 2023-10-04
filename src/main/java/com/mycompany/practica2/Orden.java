@@ -3,49 +3,90 @@ package com.mycompany.practica2;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Usuario
  */
 public class Orden {
-    private List<Producto> productos = new ArrayList<>();
-    private Date fechaCreacion;
-    private Date fechaEntrega;
+    public List<Producto> productos;
+    public Date fechaCreacion;
     private boolean finalizada;
     private Motociclista motociclistaAsignado;
+    private int distancia;
+    private double montoTotal;
+    public String fechaFormateada;
+    private Date fechaLlegadaDerecha;
+    
+    public Orden() {
+        productos = new ArrayList<>();
+        fechaCreacion = new Date();
+        finalizada = false;
+        motociclistaAsignado = null;
+        distancia = 0;
+        montoTotal = 0.0;
+    }
     
     public List<Producto> getProductos() {
         return productos;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
     }
 
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
-
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Date getFechaEntrega() {
-        return fechaEntrega;
-    }
-
-    public void setFechaEntrega(Date fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
-    }
-    public void setFinalizada(boolean finalizada) {
-        this.finalizada = finalizada;
-    }
     public Motociclista getMotociclistaAsignado() {
         return motociclistaAsignado;
     }
 
     public void setMotociclistaAsignado(Motociclista motociclistaAsignado) {
         this.motociclistaAsignado = motociclistaAsignado;
+    }
+
+    public int getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
+
+    public double getMontoTotal() {
+        return montoTotal;
+    }
+
+    public void calcularMontoTotal() {
+        montoTotal = 0.0;
+        for (Producto producto : productos) {
+            montoTotal += producto.getPrecio();
+        }
+    }
+
+    public void setFechaFormateada(String fechaFormateada) {
+        this.fechaFormateada = fechaFormateada;
+    }
+    
+    public Date getFechaLlegadaDerecha() {
+        return fechaLlegadaDerecha;
+    }
+    
+    public void setFechaLlegadaDerecha(Date fechaLlegadaDerecha) {
+        this.fechaLlegadaDerecha = fechaLlegadaDerecha;
+    }
+
+    public void setFechaEntrega(Date fechaEntrega) {
+        this.fechaLlegadaDerecha = fechaEntrega;
+    }
+
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
     }
 }

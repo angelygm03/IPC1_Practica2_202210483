@@ -6,6 +6,7 @@ import com.mycompany.practica2.Orden;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -21,6 +22,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     private boolean enviarMotociclista1Habilitado = true;
     private boolean enviarMotociclista2Habilitado = true;
     private boolean enviarMotociclista3Habilitado = true;
+    public Orden orden;
     
     
     
@@ -34,6 +36,9 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         return null;
     }
 
+    public void setOrden(Orden orden) {
+        this.orden = orden;
+    }
     
     public EnvioPedidosJFrame() {
         initComponents();
@@ -52,7 +57,8 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         System.out.println("Se reconoce el panel");
         
         movimientoImagen = new MovimientoImagen();
-
+        
+        movimientoImagen.setEnvioPedidosFrame(this);
         
         enviarMotociclista1Button.addActionListener(new ActionListener() {
         @Override
@@ -65,10 +71,10 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
     }
     
     public void iniciarOrden(Orden orden) {
-    // Asigna la orden en curso
     this.ordenEnCurso = orden;
+    this.orden = ordenEnCurso; // Agregar esta línea
     movimientoImagen.iniciarMovimiento();
-}
+    }
     
     public void setDistanciaMotociclista1(String distancia) {
         distanciaM1.setText("Distancia: " + distancia + " km");
@@ -101,7 +107,8 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
             movimientoImagen.setVelocidad(velocidad);
         }
     }
-        
+    
+         
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

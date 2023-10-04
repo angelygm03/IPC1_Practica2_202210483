@@ -1,6 +1,7 @@
 package gui;
 
 
+import com.mycompany.practica2.Orden;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,7 +29,8 @@ public class MovimientoImagen extends JPanel {
     private EnvioPedidosJFrame envioPedidosFrame;
     private Image imagenFondo;
     private int velocidad = 1;
-    
+    private Date fechaLlegadaDerecha; 
+    private boolean llegoALaDerecha = false;
     
     public MovimientoImagen() {
         try {
@@ -72,22 +75,25 @@ public void setVelocidad(int velocidad) {
     }
 
     public void setEnvioPedidosFrame(EnvioPedidosJFrame envioPedidosFrame) {
-        this.envioPedidosFrame = envioPedidosFrame;
-    }
-    
+    this.envioPedidosFrame = envioPedidosFrame;
+}
     private void moverImagen() {
         x += velocidad * direccion;
 
-        if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
-            direccion *= -1; // Cambiar de dirección al llegar al borde
+    if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
+        direccion *= -1; // Cambiar de dirección al llegar al borde
 
-            // Verificar si ha completado una ida y vuelta
-            if (x <= 0) {
-                timer.stop(); // Detener el temporizador después de una ida y vuelta
-            }
+        // Verificar si ha completado una ida y vuelta
+        if (x <= 0) {
+            timer.stop(); // Detener el temporizador después de una ida y vuelta
+        } else if (x >= getWidth() - imagenDelivery.getWidth(this) * escala && !llegoALaDerecha) {
+            // Cuando llega al lado derecho antes de girar y no ha llegado antes, registra la fecha y hora
+            fechaLlegadaDerecha = new Date();
+            llegoALaDerecha = true;
         }
+    }
 
-        repaint();
+    repaint();
     }
 
     @Override
