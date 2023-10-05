@@ -18,6 +18,7 @@ public class Orden {
     private double montoTotal;
     public String fechaFormateada;
     private Date fechaLlegadaDerecha;
+    private String motociclistaSeleccionado;
     
     public Orden() {
         productos = new ArrayList<>();
@@ -88,5 +89,12 @@ public class Orden {
 
     public void setMontoTotal(double montoTotal) {
         this.montoTotal = montoTotal;
+    }
+    public String getMotociclistaSeleccionado() {
+        return motociclistaSeleccionado;
+    }
+
+    public void setMotociclistaSeleccionado(String motociclistaSeleccionado) {
+        this.motociclistaSeleccionado = motociclistaSeleccionado;
     }
 }

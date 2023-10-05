@@ -48,13 +48,7 @@ public class EnvioPedidosJFrame extends javax.swing.JFrame {
         int azul = 204;
         Color colorPersonalizado = new Color(rojo, verde, azul);
         this.getContentPane().setBackground(colorPersonalizado);
-        
-        setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setTitle("Delivery de Pedidos");
-        System.out.println("Se reconoce el panel");
+      
         
         movimientoImagen = new MovimientoImagen();
         

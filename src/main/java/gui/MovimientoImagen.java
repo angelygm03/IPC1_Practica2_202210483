@@ -119,14 +119,14 @@ public void setVelocidad(int velocidad) {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Movimiento de Imagen");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(90, 45); // Establecer el tamaño del frame a 90x45
+    //public static void main(String[] args) {
+    //    JFrame frame = new JFrame("Movimiento de Imagen");
+      //  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setSize(90, 45); // Establecer el tamaño del frame a 90x45
 
-        MovimientoImagen movimientoImagen = new MovimientoImagen();
-        frame.add(movimientoImagen);
+        //MovimientoImagen movimientoImagen = new MovimientoImagen();
+        //frame.add(movimientoImagen);
 
-        frame.setVisible(true);
-    }
+        //frame.setVisible(true);
+    //}
 }

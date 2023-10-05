@@ -18,7 +18,7 @@ public class Practica2 {
         listaProductos.add(new Producto("Gaseosa", 12.00));
         
         RestauranteMainFrame mainFrame = new RestauranteMainFrame();
-        
+        mainFrame.setVisible(true);
     }
     
 }

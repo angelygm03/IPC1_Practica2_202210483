@@ -1,3 +1,4 @@
+gui\RestauranteMainFrame$14.class
 gui\RestauranteMainFrame$8.class
 gui\EnvioPedidosJFrame$4.class
 gui\NuevoProductoJFrame$1.class
@@ -9,6 +10,8 @@ gui\RestauranteMainFrame$11.class
 gui\EnvioPedidosJFrame$7.class
 com\mycompany\practica2\Orden.class
 com\mycompany\practica2\Practica2.class
+gui\RestauranteMainFrame$18.class
+gui\RestauranteMainFrame$16.class
 gui\EnvioPedidosJFrame$2.class
 gui\NuevoProductoJFrame$4.class
 gui\EnvioPedidosJFrame$5.class
@@ -21,7 +24,9 @@ gui\EnvioPedidosJFrame.class
 gui\RestauranteMainFrame$10.class
 gui\EnvioPedidosJFrame$3.class
 gui\NuevoProductoJFrame$2.class
+gui\RestauranteMainFrame$15.class
 com\mycompany\practica2\Motociclista.class
+gui\RestauranteMainFrame$17.class
 gui\NuevoProductoJFrame$3.class
 gui\PizzaPanel.class
 gui\RestauranteMainFrame$6.class
