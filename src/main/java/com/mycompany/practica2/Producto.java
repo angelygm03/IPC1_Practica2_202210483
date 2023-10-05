@@ -1,10 +1,12 @@
 package com.mycompany.practica2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Usuario
  */
-public class Producto {
+public class Producto implements Serializable {
     
     public String nombre;
     public double precio;

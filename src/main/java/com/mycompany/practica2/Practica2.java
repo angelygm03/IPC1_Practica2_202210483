@@ -11,7 +11,7 @@ public class Practica2 {
     public static List<Producto> listaProductos = new ArrayList<>();
     
     public static void main(String[] args) {
-        
+        try {
         listaProductos.add(new Producto("Pizza", 55.00));
         listaProductos.add(new Producto("Pollo Frito", 130.00));
         listaProductos.add(new Producto("Papas Fritas", 15.00));
@@ -19,7 +19,9 @@ public class Practica2 {
         
         RestauranteMainFrame mainFrame = new RestauranteMainFrame();
         mainFrame.setVisible(true);
+    } finally {
+        AppState.deserializar();
+        }
     }
-    
-}
+}   
     

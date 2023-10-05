@@ -1,10 +1,12 @@
 package com.mycompany.practica2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Usuario
  */
-public class Motociclista {
+public class Motociclista implements Serializable {
     private String nombreMoto;
     private boolean disponible;
     private Orden ordenAsignada;

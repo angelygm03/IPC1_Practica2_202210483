@@ -1,5 +1,6 @@
 package gui;
 
+import com.mycompany.practica2.AppState;
 import com.mycompany.practica2.Motociclista;
 import com.mycompany.practica2.Orden;
 import com.mycompany.practica2.Producto;
@@ -36,16 +37,8 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private NuevoProductoJFrame nuevoProductoFrame;
     private Set<String> motociclistasAsignados = new HashSet<>();
     public List<Orden> ordenes = new ArrayList<>();
-    private Motociclista[] motociclistas = new Motociclista[3]; // Un arreglo de tamaño 3 para los tres motociclistas
-
-    private Motociclista motociclistaAsignado; 
-    private Motociclista motociclista1;
-    private Motociclista motociclista2;
-    private Motociclista motociclista3;
-    private String distanciaTemporal;
-    private int velocidadConstante = 2;
+    private Motociclista[] motociclistas = new Motociclista[3]; 
     private List<Orden> historialPedidos = new ArrayList<>();
-    private Map<Orden, String> motocicletasAsignadas = new HashMap<>();
     private Orden ordenActual;
     private boolean enviarMotociclista1Habilitado = true;
     private boolean enviarMotociclista2Habilitado = true;
@@ -67,7 +60,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
    
       public RestauranteMainFrame() {
         initComponents();
-        
+        AppState.deserializar(); 
         int rojo = 249; // Valor de rojo (0-255)
         int verde = 243; // Valor de verde (0-255)
         int azul = 204;
@@ -182,20 +175,8 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             formatoFecha.format(orden.getFechaLlegadaDerecha())
         };
         modeloHistorial.addRow(fila);
+        AppState.serializar();
     }
-}
-
-private Orden obtenerOrdenActual() {
-    return ordenActual;
-}
-
-private Motociclista encontrarMotociclistaPorNombre(String nombre) {
-    for (Motociclista motociclista : motociclistas) {
-        if (motociclista.getNombre().equals(nombre) && motociclista.estaDisponible()) {
-            return motociclista;
-        }
-    }
-    return null; // Retorna null si no se encuentra el motociclista
 }
 
 public void setDistanciaMotociclista(String motociclista, String distancia) {
@@ -982,12 +963,14 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                    // Agrega 1 hora a la fecha de creación para la fecha de entrega
                    Calendar calendar = Calendar.getInstance();
                    calendar.setTime(fechaCreacion);
-                   calendar.add(Calendar.MINUTE, 27); // Agregar 1 hora a la fecha de creación
+                   calendar.add(Calendar.MINUTE, 27); 
+                   calendar.add(Calendar.SECOND, 14);
                    Date fechaEntrega = calendar.getTime();
                    nuevaOrden.setFechaEntrega(fechaEntrega);
 
                    historialPedidos.add(nuevaOrden);
                    actualizarTablaHistorial();
+                   AppState.serializar();
                    System.out.println("Motociclista seleccionado: " + motociclistaSeleccionado);
                    
                } else {

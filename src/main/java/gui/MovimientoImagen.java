@@ -26,7 +26,6 @@ public class MovimientoImagen extends JPanel {
     private int direccion;
     private Timer timer;
     private double escala = 0.2;
-    private EnvioPedidosJFrame envioPedidosFrame;
     private Image imagenFondo;
     private int velocidad = 1;
     private Date fechaLlegadaDerecha; 
@@ -73,27 +72,24 @@ public void setVelocidad(int velocidad) {
             repaint();
         }
     }
-
-    public void setEnvioPedidosFrame(EnvioPedidosJFrame envioPedidosFrame) {
-    this.envioPedidosFrame = envioPedidosFrame;
-}
+    
     private void moverImagen() {
         x += velocidad * direccion;
 
-    if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
-        direccion *= -1; // Cambiar de dirección al llegar al borde
+        if (x <= 0 || x >= getWidth() - imagenDelivery.getWidth(this) * escala) {
+            direccion *= -1; // Cambiar de dirección al llegar al borde
 
-        // Verificar si ha completado una ida y vuelta
-        if (x <= 0) {
-            timer.stop(); // Detener el temporizador después de una ida y vuelta
-        } else if (x >= getWidth() - imagenDelivery.getWidth(this) * escala && !llegoALaDerecha) {
-            // Cuando llega al lado derecho antes de girar y no ha llegado antes, registra la fecha y hora
-            fechaLlegadaDerecha = new Date();
-            llegoALaDerecha = true;
+            // Verificar si ha completado una ida y vuelta
+            if (x <= 0) {
+                timer.stop(); // Detener el temporizador después de una ida y vuelta
+            } else if (x >= getWidth() - imagenDelivery.getWidth(this) * escala && !llegoALaDerecha) {
+                // Cuando llega al lado derecho antes de girar y no ha llegado antes, registra la fecha y hora
+                fechaLlegadaDerecha = new Date();
+                llegoALaDerecha = true;
+            }
         }
-    }
 
-    repaint();
+        repaint();
     }
 
     @Override
@@ -118,15 +114,4 @@ public void setVelocidad(int velocidad) {
             }
         }
     }
-
-    //public static void main(String[] args) {
-    //    JFrame frame = new JFrame("Movimiento de Imagen");
-      //  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setSize(90, 45); // Establecer el tamaño del frame a 90x45
-
-        //MovimientoImagen movimientoImagen = new MovimientoImagen();
-        //frame.add(movimientoImagen);
-
-        //frame.setVisible(true);
-    //}
 }

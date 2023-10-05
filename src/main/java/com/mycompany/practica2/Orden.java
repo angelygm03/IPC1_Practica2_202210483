@@ -1,15 +1,15 @@
 package com.mycompany.practica2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JTextField;
 
 /**
  *
  * @author Usuario
  */
-public class Orden {
+public class Orden implements Serializable {
     public List<Producto> productos;
     public Date fechaCreacion;
     private boolean finalizada;
