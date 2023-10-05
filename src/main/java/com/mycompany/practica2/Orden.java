@@ -69,6 +69,7 @@ public class Orden {
         for (Producto producto : productos) {
             montoTotal += producto.getPrecio();
         }
+        System.out.println("Se calcula el monto total");
     }
 
     public void setFechaFormateada(String fechaFormateada) {

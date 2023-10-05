@@ -50,8 +50,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private boolean enviarMotociclista1Habilitado = true;
     private boolean enviarMotociclista2Habilitado = true;
     private boolean enviarMotociclista3Habilitado = true;
-    public double montoTotalOrden = 0.0;
-
 
  
 
@@ -173,11 +171,13 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     for (Orden orden : historialPedidos) {
         String fechaFormateada = formatoFecha.format(orden.getFechaCreacion());
         String motociclistaSeleccionado = orden.getMotociclistaSeleccionado(); // Obtener el motociclista seleccionado del JComboBox
-
+        System.out.println("Monto total: " + orden.getMontoTotal());
+        String distanciaConUnidad = orden.getDistancia() + " km";
+        String montoConUnidad = "Q. " + orden.getMontoTotal();
         Object[] fila = {
             motociclistaSeleccionado,
-            orden.getDistancia(),
-            orden.getMontoTotal(),
+            distanciaConUnidad,
+            montoConUnidad,
             formatoFecha.format(orden.getFechaCreacion()),
             formatoFecha.format(orden.getFechaLlegadaDerecha())
         };
@@ -798,11 +798,11 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Vehiculo", "Distancia km", "Monto Q", "Fecha de Creación", "Fecha de Entrega"
+                "Vehiculo", "Distancia", "Monto", "Fecha y Hora de Creación", "Fecha y Hora de Entrega"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -826,10 +826,10 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 .addGap(341, 341, 341)
                 .addComponent(jLabel13)
                 .addContainerGap(368, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -873,6 +873,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         DefaultTableModel modeloProductosAgregados = (DefaultTableModel) productosAgregadosJTable.getModel();
         modeloProductosAgregados.setRowCount(0); // Borra todas las filas
         totalPedido = 0.0; // Reinicia el total del pedido si es necesario
+        System.out.println("Reinica el total para una nueva orden");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         // Limpia el text field de distancia
         distanciaTF.setText("");
@@ -888,6 +889,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         Object[] fila = {"Pizza", precioPizza};
         modelo.addRow(fila);
         totalPedido += precioPizza;
+        System.out.println("Se suma el precio de la pizza");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         
         Producto pizza = new Producto("Pizza", precioPizza);
@@ -902,6 +904,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         Object[] fila = {"Pollo Frito", precioPollo};
         modelo.addRow(fila);
         totalPedido += precioPollo;
+        System.out.println("Se suma el precio del pollo");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         
         Producto polloFrito = new Producto("Pollo Frito", precioPollo);
@@ -915,6 +918,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         Object[] fila = {"Papas Fritas", precioPapas};
         modelo.addRow(fila);
         totalPedido += precioPapas;
+        System.out.println("Se suma el precio de las papas");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         
         Producto papas = new Producto("Papas Fritas", precioPapas);
@@ -928,6 +932,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         Object[] fila = {"Gaseosa", precioGaseosa};
         modelo.addRow(fila);
         totalPedido += precioGaseosa;
+        System.out.println("Se suma el precio de la gaseosa");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         
         Producto gaseosa = new Producto("Gaseosa", precioGaseosa);
@@ -936,40 +941,43 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
 
     private void confirmarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPedidoButtonActionPerformed
         String distanciaTexto = distanciaTF.getText();
-        String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+    String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
 
-       double montoTotal = totalPedido; // Utiliza totalPedido que ya contiene el monto total.
+    if (productos.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-       if (productos.isEmpty()) {
-           JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
-           return;
-       }
+    try {
+        int distancia = Integer.parseInt(distanciaTexto);
+        if (distancia > 10) {
+            JOptionPane.showMessageDialog(this, "La distancia no puede ser mayor a 10 km", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Desea confirmar la orden?", "Confirmar Orden", JOptionPane.YES_NO_OPTION);
+        System.out.println("Se hace la confirmación");
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // La orden se confirmó
+            Orden nuevaOrden = new Orden();
+            nuevaOrden.setDistancia(distancia);
+            nuevaOrden.setMotociclistaSeleccionado(motociclistaSeleccionado);
 
-       try {
-           int distancia = Integer.parseInt(distanciaTexto);
-           if (distancia > 10) {
-               JOptionPane.showMessageDialog(this, "La distancia no puede ser mayor a 10 km", "Error", JOptionPane.ERROR_MESSAGE);
-               return;
-           }
-           int confirmacion = JOptionPane.showConfirmDialog(this, "¿Desea confirmar la orden?", "Confirmar Orden", JOptionPane.YES_NO_OPTION);
-
-           if (confirmacion == JOptionPane.YES_OPTION) {
-               // La orden se confirmó
-               Orden nuevaOrden = new Orden();
-               nuevaOrden.setDistancia(distancia);
-               nuevaOrden.setMotociclistaSeleccionado(motociclistaSeleccionado);
-
-               Motociclista motociclistaDisponible = encontrarMotociclistaDisponible(motociclistaSeleccionado);
+            Motociclista motociclistaDisponible = encontrarMotociclistaDisponible(motociclistaSeleccionado);
 
             if (motociclistaDisponible != null) {
                 nuevaOrden.setMotociclistaAsignado(motociclistaDisponible);
                 motociclistaDisponible.setDisponible(false);
                 setDistanciaMotociclista(motociclistaSeleccionado, String.valueOf(distancia));
-        
-                nuevaOrden.calcularMontoTotal();
-    
-                   Date fechaCreacion = new Date();
-                   nuevaOrden.setFechaCreacion(fechaCreacion);
+
+                // Agrega los productos a la orden
+                for (Producto producto : productos) {
+                    nuevaOrden.agregarProducto(producto);
+                }
+
+                nuevaOrden.calcularMontoTotal(); // Calcula el monto total después de agregar los productos
+                System.out.println("Se llama a calcular el monto");
+                Date fechaCreacion = new Date();
+                nuevaOrden.setFechaCreacion(fechaCreacion);
 
                    // Agrega 1 hora a la fecha de creación para la fecha de entrega
                    Calendar calendar = Calendar.getInstance();
@@ -978,9 +986,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                    Date fechaEntrega = calendar.getTime();
                    nuevaOrden.setFechaEntrega(fechaEntrega);
 
-                   nuevaOrden.setMontoTotal(montoTotalOrden);
                    historialPedidos.add(nuevaOrden);
-                   nuevaOrden.calcularMontoTotal();
                    actualizarTablaHistorial();
                    System.out.println("Motociclista seleccionado: " + motociclistaSeleccionado);
                    
@@ -1009,10 +1015,9 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         Object[] fila = {nombreProducto, precioProducto};
         modeloProductosAgregados.addRow(fila);
         
-        montoTotalOrden += precioProducto;
+        totalPedido += precioProducto;
+        System.out.println("Se suma el precio del producto de la tabla");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
-        
-        montoTotalOrden = totalPedido;
     }//GEN-LAST:event_agregarProductoButtonActionPerformed
 
     private void vehiculoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculoComboBoxActionPerformed
