@@ -11,11 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -44,7 +42,6 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private boolean enviarMotociclista2Habilitado = true;
     private boolean enviarMotociclista3Habilitado = true;
 
- 
 
     public List<Producto> getProducto() {
         return productos;
@@ -52,18 +49,21 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     
     public void agregarProducto(Producto producto) {
         productos.add(producto);
+        AppState.guardarProductos(productos);
     }
     
     public List<Orden> getOrdenes() {
         return ordenes;
     }
    
-      public RestauranteMainFrame() {
-        initComponents();
-        AppState.deserializar(); 
-        int rojo = 249; // Valor de rojo (0-255)
-        int verde = 243; // Valor de verde (0-255)
-        int azul = 204;
+      public RestauranteMainFrame(List<Producto> productos) {
+        this.productos = productos;
+          initComponents();
+        
+        this.ActualizarTablaProductos(productos);
+        int rojo = 171; // Valor de rojo (0-255)
+        int verde = 0; // Valor de verde (0-255)
+        int azul = 0;
         Color colorPersonalizado = new Color(rojo, verde, azul);
         this.getContentPane().setBackground(colorPersonalizado);
         
@@ -71,7 +71,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         this.setVisible(true); //Hace visible la ventana
         this.setLocationRelativeTo(null); //La coloca al centro
         this.setResizable(false); //Bloquea el redimensionamiento de la ventana
-        this.setTitle("Nuevo pedido"); //Título a la ventana
+        this.setTitle("Gestión de Pedidos"); //Título a la ventana
         
         this.ActualizarTablaProductos(productos);
         
@@ -94,7 +94,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         vehiculoComboBox.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // Obtén el motociclista seleccionado del JComboBox
+            
             String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
 
             // Agrega el motociclista seleccionado a la tabla de historial
@@ -102,10 +102,9 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             modeloHistorial.addRow(new Object[] { motociclistaSeleccionado });
         }
     });
-
-        }
-
-    
+ }
+        
+        
     public String getDistanciaTexto() {
         return distanciaTF.getText();
     }
@@ -126,7 +125,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     }
     
     public void abrirNuevoProductoFrame() {
-        nuevoProductoFrame = new NuevoProductoJFrame(this);
+        nuevoProductoFrame = new NuevoProductoJFrame(this, productos);
         nuevoProductoFrame.setVisible(true);
     }
     
@@ -175,7 +174,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
             formatoFecha.format(orden.getFechaLlegadaDerecha())
         };
         modeloHistorial.addRow(fila);
-        AppState.serializar();
+        
     }
 }
 
@@ -188,7 +187,10 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         distanciaM3.setText("Distancia: " + distancia + " km");
     }
 }
-    
+   public void cargarProductos() {
+        productos = AppState.cargarProductos();
+        ActualizarTablaProductos(productos);
+    } 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -250,17 +252,21 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         jLabel13 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         historialJTable = new javax.swing.JTable();
+        fastFoodPanel1 = new gui.FastFoodPanel();
         totalPedidoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.setBackground(new java.awt.Color(249, 243, 204));
+        jTabbedPane1.setBackground(new java.awt.Color(171, 0, 0));
+        jTabbedPane1.setForeground(new java.awt.Color(255, 255, 255));
         jTabbedPane1.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
 
-        jPanel1.setBackground(new java.awt.Color(249, 243, 204));
+        jPanel1.setBackground(new java.awt.Color(171, 0, 0));
         jPanel1.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
 
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Restaurante Comida Rápida ");
 
         nuevoProductoButton.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -323,19 +329,24 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
             .addGap(0, 76, Short.MAX_VALUE)
         );
 
-        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Populares");
 
-        jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Pizza Q55");
 
-        jLabel3.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Pollo Frito Q130");
 
-        jLabel4.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Papas Fritas Q15");
 
-        jLabel5.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Gaseosa Q12");
 
         productosJTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -387,10 +398,12 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         });
         jScrollPane2.setViewportView(productosAgregadosJTable);
 
-        jLabel6.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Otros productos");
 
-        jLabel7.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Orden");
 
         agregarPizzaButton.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -425,15 +438,18 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Trebuchet MS", 1, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Distancia");
 
-        distanciaTF.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        distanciaTF.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Trebuchet MS", 1, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("km");
 
-        jLabel11.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Trebuchet MS", 1, 16)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Vehículo");
 
         vehiculoComboBox.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
@@ -460,6 +476,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         });
 
         totalOrdenLabel.setFont(new java.awt.Font("Trebuchet MS", 1, 15)); // NOI18N
+        totalOrdenLabel.setForeground(new java.awt.Color(255, 255, 255));
         totalOrdenLabel.setText("Total del Pedido:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -470,40 +487,45 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(94, 94, 94)
-                                        .addComponent(jLabel2)
-                                        .addGap(137, 137, 137))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(agregarPizzaButton)
-                                            .addComponent(pizzaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(120, 120, 120)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(polloPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(agregarPolloButton)))
-                                        .addGap(118, 118, 118)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(agregarPapasButton))
-                                            .addComponent(papasPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel4)))
-                                    .addComponent(jLabel9))
-                                .addGap(89, 89, 89))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(nuevaOrdenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(571, 571, 571)))
+                                .addGap(571, 571, 571))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(agregarPizzaButton)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(pizzaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2))
+                                        .addGap(137, 137, 137)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel3)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(6, 6, 6)
+                                                        .addComponent(agregarPolloButton))
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(10, 10, 10)
+                                                        .addComponent(polloPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(118, 118, 118)
+                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGap(6, 6, 6)
+                                                                .addComponent(agregarPapasButton))
+                                                            .addComponent(jLabel4)))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(papasPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(13, 13, 13))))
+                                            .addComponent(jLabel9))))
+                                .addGap(89, 89, 89)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -512,21 +534,16 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                                     .addComponent(jLabel5)
                                     .addComponent(agregarGaseosaButton)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                                 .addComponent(nuevoProductoButton))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addGap(372, 372, 372))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(distanciaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10)
                                 .addGap(86, 86, 86)
@@ -535,17 +552,23 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                                 .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(confirmarPedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(agregarProductoButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(agregarProductoButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                    .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(totalOrdenLabel)
-                                        .addGap(34, 34, 34)))))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(365, 365, 365))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(totalOrdenLabel)
+                                            .addGap(34, 34, 34))))))))
                 .addGap(42, 42, 42))
         );
         jPanel1Layout.setVerticalGroup(
@@ -559,17 +582,18 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nuevoProductoButton)
                             .addComponent(nuevaOrdenButton))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
+                                .addGap(27, 27, 27)
                                 .addComponent(jLabel1)
-                                .addGap(5, 5, 5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(pizzaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(gaseosaPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(polloPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(papasPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gaseosaPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(papasPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(polloPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -578,11 +602,12 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                         .addComponent(jLabel3)
                         .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(agregarPizzaButton)
-                    .addComponent(agregarPolloButton)
-                    .addComponent(agregarPapasButton)
-                    .addComponent(agregarGaseosaButton))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(agregarPolloButton)
+                        .addComponent(agregarPapasButton)
+                        .addComponent(agregarGaseosaButton)))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -604,10 +629,12 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                     .addComponent(jLabel11)
                     .addComponent(vehiculoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(confirmarPedidoButton))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Menú", jPanel1);
+
+        jPanel3.setBackground(new java.awt.Color(238, 238, 238));
 
         jLabel14.setFont(new java.awt.Font("Trebuchet MS", 1, 16)); // NOI18N
         jLabel14.setText("Motociclista 1");
@@ -763,9 +790,11 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
 
         jTabbedPane1.addTab("Delivery", jPanel3);
 
-        jPanel2.setBackground(new java.awt.Color(249, 243, 204));
+        jPanel2.setBackground(new java.awt.Color(171, 0, 0));
 
+        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
         jLabel13.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Historial de Pedidos");
 
         historialJTable.setFont(new java.awt.Font("Trebuchet MS", 0, 16)); // NOI18N
@@ -799,6 +828,17 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         });
         jScrollPane3.setViewportView(historialJTable);
 
+        javax.swing.GroupLayout fastFoodPanel1Layout = new javax.swing.GroupLayout(fastFoodPanel1);
+        fastFoodPanel1.setLayout(fastFoodPanel1Layout);
+        fastFoodPanel1Layout.setHorizontalGroup(
+            fastFoodPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 154, Short.MAX_VALUE)
+        );
+        fastFoodPanel1Layout.setVerticalGroup(
+            fastFoodPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 151, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -809,8 +849,13 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 .addContainerGap(368, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(fastFoodPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -819,7 +864,9 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 .addComponent(jLabel13)
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(fastFoodPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Historial", jPanel2);
@@ -959,18 +1006,24 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                 System.out.println("Se llama a calcular el monto");
                 Date fechaCreacion = new Date();
                 nuevaOrden.setFechaCreacion(fechaCreacion);
-
-                   // Agrega 1 hora a la fecha de creación para la fecha de entrega
+                   
                    Calendar calendar = Calendar.getInstance();
                    calendar.setTime(fechaCreacion);
                    calendar.add(Calendar.MINUTE, 27); 
                    calendar.add(Calendar.SECOND, 14);
                    Date fechaEntrega = calendar.getTime();
                    nuevaOrden.setFechaEntrega(fechaEntrega);
+                   
+                   System.out.println("Nueva Orden Agregada:");
+                   System.out.println("Motociclista: " + nuevaOrden.getMotociclistaSeleccionado());
+                   System.out.println("Distancia: " + nuevaOrden.getDistancia() + " km");
+                   System.out.println("Monto Total: Q. " + nuevaOrden.getMontoTotal());
+                   System.out.println("Fecha de Creación: " + nuevaOrden.getFechaCreacion());
+                   System.out.println("Fecha de Entrega: " + nuevaOrden.getFechaLlegadaDerecha());
 
                    historialPedidos.add(nuevaOrden);
                    actualizarTablaHistorial();
-                   AppState.serializar();
+                   
                    System.out.println("Motociclista seleccionado: " + motociclistaSeleccionado);
                    
                } else {
@@ -1021,7 +1074,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
 
     private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed
-        NuevoProductoJFrame nuevoProductoFrame = new NuevoProductoJFrame(this);
+        NuevoProductoJFrame nuevoProductoFrame = new NuevoProductoJFrame(this, productos);
         nuevoProductoFrame.setVisible(true);
     }//GEN-LAST:event_nuevoProductoButtonActionPerformed
 
@@ -1094,7 +1147,12 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RestauranteMainFrame().setVisible(true);
+                 List<Producto> listaProductos = AppState.cargarProductos();
+            
+            if (listaProductos == null) {
+                listaProductos = new ArrayList<>();
+            }
+                new RestauranteMainFrame(listaProductos).setVisible(true);
             }
         });
     }
@@ -1114,6 +1172,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
     private javax.swing.JButton enviarMotociclista2Button;
     private javax.swing.JButton enviarMotociclista3Button;
     private javax.swing.JButton enviarTodosButton;
+    private gui.FastFoodPanel fastFoodPanel1;
     private gui.GaseosaPanel gaseosaPanel1;
     private javax.swing.JTable historialJTable;
     private javax.swing.JLabel jLabel1;

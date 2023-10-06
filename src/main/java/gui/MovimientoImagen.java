@@ -1,7 +1,5 @@
 package gui;
 
-
-import com.mycompany.practica2.Orden;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;

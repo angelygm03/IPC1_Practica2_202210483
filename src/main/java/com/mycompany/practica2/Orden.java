@@ -98,4 +98,7 @@ public class Orden implements Serializable {
     public void setMotociclistaSeleccionado(String motociclistaSeleccionado) {
         this.motociclistaSeleccionado = motociclistaSeleccionado;
     }
+    public String toString() {
+        return "Moticiclista " + motociclistaAsignado + ", Distancia " + distancia + ", productos" + productos + "fecha de creacion" + fechaCreacion + "fecha de entrega " + fechaLlegadaDerecha;
+    }
 }

@@ -1,7 +1,10 @@
 package gui;
 
+import com.mycompany.practica2.AppState;
 import com.mycompany.practica2.Producto;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,14 +14,16 @@ import javax.swing.JOptionPane;
 public class NuevoProductoJFrame extends javax.swing.JFrame {
 
     private RestauranteMainFrame restauranteMainFrame;
+    private List<Producto> productos;
     
-    public NuevoProductoJFrame(RestauranteMainFrame mainFrame) {
+    public NuevoProductoJFrame(RestauranteMainFrame mainFrame, List<Producto> productos) {
         
         initComponents();
         this.restauranteMainFrame = mainFrame;
-        int rojo = 249; // Valor de rojo (0-255)
-        int verde = 243; // Valor de verde (0-255)
-        int azul = 204;
+        this.productos = productos;
+        int rojo = 238; // Valor de rojo (0-255)
+        int verde = 238; // Valor de verde (0-255)
+        int azul = 238;
         Color colorPersonalizado = new Color(rojo, verde, azul);
         this.getContentPane().setBackground(colorPersonalizado);
         
@@ -220,8 +225,14 @@ public class NuevoProductoJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                RestauranteMainFrame mainFrame = new RestauranteMainFrame();
-            new NuevoProductoJFrame(mainFrame).setVisible(true);
+                List<Producto> listaProductos = AppState.cargarProductos();
+            
+            if (listaProductos == null) {
+                listaProductos = new ArrayList<>();
+            }
+            
+            RestauranteMainFrame mainFrame = new RestauranteMainFrame(listaProductos);
+            new NuevoProductoJFrame(mainFrame, listaProductos).setVisible(true);
             }
         });
     }
