@@ -55,12 +55,19 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     public List<Orden> getOrdenes() {
         return ordenes;
     }
-   
-      public RestauranteMainFrame(List<Producto> productos) {
-        this.productos = productos;
+   public void agregarOrden(Orden nuevaOrden) {
+    ordenes.add(nuevaOrden);
+    System.out.println("Orden agregada: " + nuevaOrden);
+    AppState.guardarOrdenes(ordenes);
+}
+
+    public RestauranteMainFrame(List<Producto> productos) {
+         this.productos = productos;
+         this.ordenes = AppState.cargarOrdenes();
           initComponents();
         
         this.ActualizarTablaProductos(productos);
+        this.ActualizarTablaHistorial(ordenes);
         int rojo = 171; // Valor de rojo (0-255)
         int verde = 0; // Valor de verde (0-255)
         int azul = 0;
@@ -152,7 +159,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     return null;
 }
 
-    private void actualizarTablaHistorial() {
+    public void ActualizarTablaHistorial(List<Orden> ordenes) {
     DefaultTableModel modeloHistorial = (DefaultTableModel) historialJTable.getModel();
     modeloHistorial.setRowCount(0); // Borra todas las filas existentes
 
@@ -191,6 +198,12 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
         productos = AppState.cargarProductos();
         ActualizarTablaProductos(productos);
     } 
+
+    public void cargarOrdenes() {
+        ordenes = AppState.cargarOrdenes();
+        ActualizarTablaHistorial(ordenes); 
+    }   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1022,8 +1035,8 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                    System.out.println("Fecha de Entrega: " + nuevaOrden.getFechaLlegadaDerecha());
 
                    historialPedidos.add(nuevaOrden);
-                   actualizarTablaHistorial();
-                   
+                   ActualizarTablaHistorial(ordenes);
+                   AppState.guardarOrdenes(ordenes);
                    System.out.println("Motociclista seleccionado: " + motociclistaSeleccionado);
                    
                } else {
