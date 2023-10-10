@@ -11,10 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -32,12 +30,10 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
     private double totalPedido = 0.0;
     private DefaultTableModel modelo;
     public List<Producto> productos = new ArrayList<>();
-    private NuevoProductoJFrame nuevoProductoFrame;
-    private Set<String> motociclistasAsignados = new HashSet<>();
+    private NuevoProductoJFrame nuevoProductoFrame;   
     public List<Orden> ordenes = new ArrayList<>();
     private Motociclista[] motociclistas = new Motociclista[3]; 
     private List<Orden> historialPedidos = new ArrayList<>();
-    private Orden ordenActual;
     private boolean enviarMotociclista1Habilitado = true;
     private boolean enviarMotociclista2Habilitado = true;
     private boolean enviarMotociclista3Habilitado = true;
@@ -70,7 +66,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         this.ActualizarTablaHistorial(ordenes);
         int rojo = 171; // Valor de rojo (0-255)
         int verde = 0; // Valor de verde (0-255)
-        int azul = 0;
+        int azul = 0; //Valor de azul (0-255)
         Color colorPersonalizado = new Color(rojo, verde, azul);
         this.getContentPane().setBackground(colorPersonalizado);
         
@@ -88,7 +84,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
         modelo.addColumn("Precio");
         productosAgregadosJTable.setModel(modelo);
         
-        productosJTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Permite seleccionar una sola fila a la vez
+        productosJTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         motociclistas[0] = new Motociclista("Motociclista 1", "M1");
         motociclistas[1] = new Motociclista("Motociclista 2", "M2");
@@ -169,7 +165,7 @@ public class RestauranteMainFrame extends javax.swing.JFrame {
 
     for (Orden orden : historialPedidos) {
         String fechaFormateada = formatoFecha.format(orden.getFechaCreacion());
-        String motociclistaSeleccionado = orden.getMotociclistaSeleccionado(); // Obtener el motociclista seleccionado del JComboBox
+        String motociclistaSeleccionado = orden.getMotociclistaSeleccionado(); 
         System.out.println("Monto total: " + orden.getMontoTotal());
         String distanciaConUnidad = orden.getDistancia() + " km";
         String montoConUnidad = "Q. " + orden.getMontoTotal();
@@ -910,10 +906,10 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
 
     private void nuevaOrdenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaOrdenButtonActionPerformed
         reiniciarContadores();
-        // Limpia la tabla productosAgregadosJTable si es necesario
+        // Limpia la tabla 
         DefaultTableModel modeloProductosAgregados = (DefaultTableModel) productosAgregadosJTable.getModel();
         modeloProductosAgregados.setRowCount(0); // Borra todas las filas
-        totalPedido = 0.0; // Reinicia el total del pedido si es necesario
+        totalPedido = 0.0; // Reinicia el total del pedido
         System.out.println("Reinica el total para una nueva orden");
         totalOrdenLabel.setText("Total del pedido: Q " + totalPedido);
         // Limpia el text field de distancia
@@ -982,7 +978,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
 
     private void confirmarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPedidoButtonActionPerformed
         String distanciaTexto = distanciaTF.getText();
-    String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
+        String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
 
     if (productos.isEmpty()) {
         JOptionPane.showMessageDialog(this, "No hay productos en la orden.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1015,7 +1011,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
                     nuevaOrden.agregarProducto(producto);
                 }
 
-                nuevaOrden.calcularMontoTotal(); // Calcula el monto total después de agregar los productos
+                nuevaOrden.calcularMontoTotal(); // Calcula el monto total 
                 System.out.println("Se llama a calcular el monto");
                 Date fechaCreacion = new Date();
                 nuevaOrden.setFechaCreacion(fechaCreacion);
@@ -1072,18 +1068,7 @@ public void setDistanciaMotociclista(String motociclista, String distancia) {
     private void vehiculoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculoComboBoxActionPerformed
         String motociclistaSeleccionado = (String) vehiculoComboBox.getSelectedItem();
 
-        String distanciaTexto = distanciaTF.getText(); // Obtener la distancia ingresada
-
-        // Verifica si el motociclista ya ha sido asignado a otra orden
-        if (motociclistasAsignados.contains(motociclistaSeleccionado)) {
-            JOptionPane.showMessageDialog(this, "Este motociclista ya ha sido asignado a otra orden.", "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Lista de motociclistas: " + motociclistas);
-
-            vehiculoComboBox.setSelectedIndex(0); // Reinicia la selección
-        } else {
-            System.out.println("Se selecciona moto");
-            
-        }
+        
     }//GEN-LAST:event_vehiculoComboBoxActionPerformed
 
     private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed

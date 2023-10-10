@@ -13,7 +13,6 @@ public class Practica2 {
     public static void main(String[] args) {
         List<Producto> listaProductos = AppState.cargarProductos();
         
-        // Si no se cargaron productos, crea una nueva lista
         if (listaProductos == null) {
             listaProductos = new ArrayList<>();
         }
